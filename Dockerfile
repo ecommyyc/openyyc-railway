@@ -1,7 +1,12 @@
-# Use the official OpenClaw image
 FROM ghcr.io/openclaw/openclaw:latest
 
-# Copy config file
+# Ensure config directory exists and is writable
+USER root
+RUN mkdir -p /home/node/.openclaw && \
+    chown -R node:node /home/node/.openclaw
+USER node
+
+# Copy config
 COPY openclaw.yaml /home/node/.openclaw/config.yaml
 
 # Expose port
