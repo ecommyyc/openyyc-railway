@@ -4,7 +4,7 @@
     "dockerfilePath": "./Dockerfile"
   },
   "deploy": {
-    "startCommand": "HOST=0.0.0.0 openclaw gateway run --allow-unconfigured",
+    "startCommand": "HOST=0.0.0.0 GATEWAY_HOST=0.0.0.0 openclaw gateway run --allow-unconfigured",
     "port": 18789
   }
 }
