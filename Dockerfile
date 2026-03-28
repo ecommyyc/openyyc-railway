@@ -1,14 +1,25 @@
-# Use official Node.js 22 image
-FROM node:22-alpine
+# Use Ubuntu as base image (better compatibility for OpenClaw)
+FROM ubuntu:22.04
 
-# Set working directory
-WORKDIR /app
+# Avoid prompts from apt
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Install OpenClaw CLI globally
-RUN npm install -g @openclaw/cli
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y curl sudo && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Expose the default OpenClaw port
+# Create a non-root user
+RUN useradd -m -s /bin/bash openclaw
+USER openclaw
+WORKDIR /home/openclaw
+
+# Install OpenClaw using official installer
+RUN curl -fsSL https://openclaw.ai/install.sh | bash
+
+# Expose OpenClaw port
 EXPOSE 18789
 
-# Start the OpenClaw gateway
-CMD ["openclaw", "gateway", "start", "--host", "0.0.0.0"]
+# Start OpenClaw gateway
+CMD ["/home/openclaw/.local/bin/openclaw", "gateway", "start", "--host", "0.0.0.0"]
