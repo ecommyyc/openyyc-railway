@@ -1,8 +1,8 @@
-# Use pre-built OpenClaw image from Docker Hub
+# Use the official OpenClaw image
 FROM ghcr.io/openclaw/openclaw:latest
 
-# Expose OpenClaw port
+# Expose the default OpenClaw port
 EXPOSE 18789
 
-# Start OpenClaw gateway
-CMD ["openclaw", "gateway", "start", "--host", "0.0.0.0"]
+# Set host and run gateway in foreground
+CMD ["sh", "-c", "HOST=0.0.0.0 GATEWAY_HOST=0.0.0.0 openclaw gateway run --allow-unconfigured"]
